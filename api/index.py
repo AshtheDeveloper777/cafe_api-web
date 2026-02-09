@@ -73,6 +73,10 @@ def get_random_cafe():
 @app.route("/all-cafes")
 def get_cafes():
     return jsonify(msg="route reached")
+@app.route("/test")
+def test():
+    return jsonify(msg="test works")
+
 
 
 #Searching the data via location
