@@ -13,7 +13,7 @@ python -m pip install -r requirements.txt
 
 
 
-This will install the packages from requirements.txt for this project.
+This will install the packages from requirements.txt for this projects.
 '''
 
 app = Flask(__name__)
