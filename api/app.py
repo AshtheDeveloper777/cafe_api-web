@@ -65,17 +65,12 @@ def get_random_cafe():
     return jsonify(cafe=random_cafe.to_dict())
 
 #Gets a all cafe data
-#@app.route("/all-cafes")
-#def get_cafes():
+@app.route("/all-cafes", methods=["GET"])
+def get_cafes():
     result = db.session.execute(db.select(Cafe).order_by(Cafe.name))
     all_cafes = result.scalars().all()
     return jsonify(cafes=[cafe.to_dict() for cafe in all_cafes])
-@app.route("/all-cafes")
-def get_cafes():
-    return jsonify(msg="route reached")
-@app.route("/test")
-def test():
-    return jsonify(msg="test works")
+
 
 
 
