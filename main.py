@@ -65,7 +65,7 @@ def get_random_cafe():
     return jsonify(cafe=random_cafe.to_dict())
 
 #Gets a all cafe data
-@app.route("/all_cafes")
+@app.route("/all-cafes")
 def get_cafes():
     result = db.session.execute(db.select(Cafe).order_by(Cafe.name))
     all_cafes = result.scalars().all()
