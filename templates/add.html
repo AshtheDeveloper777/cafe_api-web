@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Add A Cafe | Coffee & Wifi{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="glass-card">
+      <h1 class="mb-2 fw-800" style="letter-spacing: -1px; font-weight: 800; font-size: 2.2rem; color: #fff;">Add a New Cafe</h1>
+      <p class="text-muted mb-5">Share a great remote-working spot with the community.</p>
+
+      <form method="POST" novalidate>
+        {{ form.csrf_token }}
+
+        <div class="mb-4">
+          {{ form.cafe.label(class="form-label") }}
+          {{ form.cafe(class="form-control", placeholder="e.g., Lighthaus Coffee") }}
+          {% if form.cafe.errors %}
+            <div class="invalid-feedback d-block">{{ form.cafe.errors[0] }}</div>
+          {% endif %}
+        </div>
+
+        <div class="mb-4">
+          {{ form.location.label(class="form-label") }}
+          {{ form.location(class="form-control", placeholder="e.g., https://goo.gl/maps/...") }}
+          {% if form.location.errors %}
+            <div class="invalid-feedback d-block">{{ form.location.errors[0] }}</div>
+          {% endif %}
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-4">
+            {{ form.open_time.label(class="form-label") }}
+            {{ form.open_time(class="form-control", placeholder="e.g., 8:00 AM") }}
+            {% if form.open_time.errors %}
+              <div class="invalid-feedback d-block">{{ form.open_time.errors[0] }}</div>
+            {% endif %}
+          </div>
+          <div class="col-md-6 mb-4">
+            {{ form.close_time.label(class="form-label") }}
+            {{ form.close_time(class="form-control", placeholder="e.g., 6:00 PM") }}
+            {% if form.close_time.errors %}
+              <div class="invalid-feedback d-block">{{ form.close_time.errors[0] }}</div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4 mb-4">
+            {{ form.coffee.label(class="form-label") }}
+            {{ form.coffee(class="form-select") }}
+            {% if form.coffee.errors %}
+              <div class="invalid-feedback d-block">{{ form.coffee.errors[0] }}</div>
+            {% endif %}
+          </div>
+          <div class="col-md-4 mb-4">
+            {{ form.wifi.label(class="form-label") }}
+            {{ form.wifi(class="form-select") }}
+            {% if form.wifi.errors %}
+              <div class="invalid-feedback d-block">{{ form.wifi.errors[0] }}</div>
+            {% endif %}
+          </div>
+          <div class="col-md-4 mb-4">
+            {{ form.power.label(class="form-label") }}
+            {{ form.power(class="form-select") }}
+            {% if form.power.errors %}
+              <div class="invalid-feedback d-block">{{ form.power.errors[0] }}</div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="mt-4 pt-2">
+          {{ form.submit(class="btn btn-primary-custom w-100 py-3") }}
+        </div>
+      </form>
+      
+      <div class="text-center mt-4">
+        <a href="{{ url_for('cafes') }}" class="text-muted small">← Cancel and see all cafes</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

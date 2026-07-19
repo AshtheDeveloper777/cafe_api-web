@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Coffee & Wifi | Find Your Ideal Workspace{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+  <h1 class="hero-title">Find Your Perfect<br>Workspace</h1>
+  <p class="hero-subtitle">
+    Ditch the office. Discover handpicked local cafes equipped with high-speed internet, accessible power outlets, and outstanding coffee.
+  </p>
+  <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center w-100">
+    <a class="btn btn-primary-custom btn-lg px-5" href="{{ url_for('cafes') }}" role="button">Explore Cafes</a>
+    <a class="btn btn-secondary-custom btn-lg px-5" href="{{ url_for('add_cafe') }}" role="button">Add A Cafe</a>
+  </div>
+
+  <div class="features-grid mt-5">
+    <div class="feature-badge">
+      <div class="feature-icon">☕</div>
+      <h3 class="feature-title">Artisanal Coffee</h3>
+      <p class="feature-desc">Filter cafes by the quality of their espresso, beans, and barista skills.</p>
+    </div>
+    <div class="feature-badge">
+      <div class="feature-icon">💪</div>
+      <h3 class="feature-title">High-Speed Wifi</h3>
+      <p class="feature-desc">Find spaces with stable, fast internet suitable for video calls and uploads.</p>
+    </div>
+    <div class="feature-badge">
+      <div class="feature-icon">🔌</div>
+      <h3 class="feature-title">Abundant Power</h3>
+      <p class="feature-desc">Locate tables with accessible power sockets so your devices never die.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
