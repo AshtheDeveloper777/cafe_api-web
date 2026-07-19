@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for
 from flask_bootstrap import Bootstrap5
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
@@ -77,38 +77,53 @@ def home():
     return render_template("index.html")
 
 
+# Global in-memory storage fallback for Vercel's read-only serverless environment
+in_memory_cafes = []
+
 @app.route('/add', methods=["GET", "POST"])
 def add_cafe():
     form = CafeForm()
     if form.validate_on_submit():
-        print("True")
-        # open CSV in append mode
-        with open('cafe-data.csv', mode="a", encoding="utf-8", newline='') as csv_file:
-            csv_writer = csv.writer(csv_file)
-            csv_writer.writerow([
-                form.cafe.data,
-                form.location.data,
-                form.open_time.data,
-                form.close_time.data,
-                form.coffee.data,
-                form.wifi.data,
-                form.power.data
-            ])
-        # Exercise:
-    # Make the form write a new row into cafe-data.csv
-    # with   if form.validate_on_submit()
+        row_data = [
+            form.cafe.data,
+            form.location.data,
+            form.open_time.data,
+            form.close_time.data,
+            form.coffee.data,
+            form.wifi.data,
+            form.power.data
+        ]
+        try:
+            # Try to write to the local CSV file
+            with open('cafe-data.csv', mode="a", encoding="utf-8", newline='') as csv_file:
+                csv_writer = csv.writer(csv_file)
+                csv_writer.writerow(row_data)
+        except OSError:
+            # If filesystem is read-only (like Vercel), store in-memory for the current session
+            in_memory_cafes.append(row_data)
+            
+        return redirect(url_for('cafes'))
     return render_template('add.html', form=form)
 
 
 @app.route('/cafes')
 def cafes():
-    with open('cafe-data.csv', newline='', encoding='utf-8') as csv_file:
-        csv_data = csv.reader(csv_file, delimiter=',')
-        list_of_rows = []
-        for row in csv_data:
-            # Skip empty rows or rows that do not have at least 7 fields or have empty cafe names
-            if row and len(row) >= 7 and row[0].strip():
-                list_of_rows.append([item.strip() for item in row])
+    list_of_rows = []
+    try:
+        with open('cafe-data.csv', newline='', encoding='utf-8') as csv_file:
+            csv_data = csv.reader(csv_file, delimiter=',')
+            for row in csv_data:
+                # Skip empty rows or rows that do not have at least 7 fields or have empty cafe names
+                if row and len(row) >= 7 and row[0].strip():
+                    list_of_rows.append([item.strip() for item in row])
+    except FileNotFoundError:
+        # Fallback header if CSV is missing
+        list_of_rows.append(['Cafe Name', 'Location', 'Open ', 'Close', 'Coffee', 'Wifi', 'Power'])
+
+    # Append in-memory fallback entries
+    for row in in_memory_cafes:
+        list_of_rows.append(row)
+
     return render_template('cafes.html', cafes=list_of_rows)
 
 
